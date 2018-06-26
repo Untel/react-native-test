@@ -1,32 +1,58 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button, List, ListItem, FlatList  } from 'react-native';
 import { GlobalStyles } from './styles';
-
+// import { List, ListItem, FlatList } from 'react-native-elements'
 export default class Home extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            messages : {}
+            messages: [],
+            tests: [
+                {
+                name: 'Amy Farha',
+                avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+                subtitle: 'Vice President'
+                },
+                {
+                name: 'Chris Jackson',
+                avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+                subtitle: 'Vice Chairman'
+                },
+            ]
         };
     }
 
     render() {
         return (
         <View style={GlobalStyles.container}>
-            <Text>Chat</Text>
-
+            <Text>Messages</Text>
             <FlatList
-                data={[{key: 'a'}, {key: 'b'}]}
-                renderItem={({item}) => <Text>{item.key}</Text>}
+                data={this.state.messages}
+                renderItem={({item}) => (
+                    <View style={GlobalStyles.row}>
+                        <View>
+                            <Text>{ item.username }</Text>
+                            <Text>{ item.message }</Text>
+                        </View>
+                        <View>
+                            <Text>{ new Date(item.date).toLocaleDateString() }</Text>
+                        </View>
+                    </View>
+                )}
                 />
-
-            <Button
-                title="Go to Details"
-                onPress={() => this.props.navigation.navigate('Login')}
-            />
         </View>
         );
+    }
+
+    renderRow (rowData, sectionID) {
+        return (
+          <ListItem
+            key={sectionID}
+            title={rowData.name}
+            subtitle={rowData.message}
+          />
+        )
     }
 
     async componentDidMount(){
@@ -44,7 +70,7 @@ export default class Home extends React.Component {
             });
 
             if (response.status >= 200 && response.status < 300) {
-                this.state.messages = await response.json();
+                this.setState({ messages: await response.json() });
                 console.log("messages", response, this.state.messages);
             }
       

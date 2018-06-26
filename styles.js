@@ -15,5 +15,17 @@ export const GlobalStyles = StyleSheet.create({
       borderWidth: 1,
       margin: 10,
       paddingLeft: 10
+    },
+
+    row: {
+      width: '100%',
+      flex: 1,
+      flexDirection: 'row',
+    },
+
+    col: {
+      flex: 1,
+      width: '100%',      
+      flexDirection: 'column'
     }
 });
